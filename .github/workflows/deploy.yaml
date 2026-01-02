@@ -19,10 +19,11 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
 
       - name: "Build Docker image"
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: .
           tags: erki99/gt-action-demo
+          push: true
 
       - name: deploying
         uses: appleboy/ssh-action@v0.1.8
