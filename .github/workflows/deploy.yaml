@@ -5,15 +5,13 @@ on:
     branches:
       - main
 
-
-
 jobs:
   build:
     name: "Build the docker image"
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout the code"
-        uses: actions/checkout
+        uses: actions/checkout@v3
       - name: "Loging to Docker Hub"
         uses: docker/login-action@v3
         with:
@@ -21,12 +19,12 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
 
       - name: "Build Docker image"
-        uses: docker/build-push-action
+        uses: docker/build-push-action@v3
         with:
           context: .
           publish: true
           tags: erki/gt-action-demo
-        
+
       - name: deploying
         uses: appleboy/ssh-action@v0.1.8
         with:
@@ -39,5 +37,3 @@ jobs:
             docker container stop gt-action-demo
             docker container rm gt-action-demo
             docker container run -d --name gt-action-demo -p 80:5000 erki/gt-action-demo
-
-
