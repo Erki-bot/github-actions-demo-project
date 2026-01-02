@@ -22,7 +22,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          publish: true
           tags: erki/gt-action-demo
 
       - name: deploying
@@ -33,7 +32,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}} 
             docker image pull erki/gt-action-demo:latest
             docker container stop gt-action-demo
             docker container rm gt-action-demo
             docker container run -d --name gt-action-demo -p 80:5000 erki/gt-action-demo
+            docker logout
