@@ -22,7 +22,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          tags: erki99/gt-action-demo
+          tags: ${{vars.DOCKER_IMAGE_TAG}}
           push: true
 
       - name: deploying
@@ -34,8 +34,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}} 
-            docker image pull erki99/gt-action-demo:latest
+            docker image pull ${{vars.DOCKER_IMAGE_TAG}}:latest
             docker container stop gt-action-demo
             docker container rm gt-action-demo
-            docker container run -d --name gt-action-demo -p 80:5000 erki99/gt-action-demo
+            docker container run -d --name gt-action-demo -p 80:5000 ${{vars.DOCKER_IMAGE_TAG}}
             docker logout
